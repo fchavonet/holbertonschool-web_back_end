@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Module with a type-annotated function to convert a string
-and an int OR float to a tuple.
+Module with a type-annotated function
+to convert a string and an int OR float to a tuple.
 """
 
 from typing import Union, Tuple
