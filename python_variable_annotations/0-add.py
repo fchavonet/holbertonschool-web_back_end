@@ -7,10 +7,10 @@ def add(a: float, b: float) -> float:
     Add two floating-point numbers.
 
     Args:
-        a (float): The first operand.
-        b (float): The second operand.
+        a (float): the first operand.
+        b (float): the second operand.
 
     Returns:
-        float: The sum of the two input numbers.
+        float: the sum of the two input numbers.
     """
     return (a + b)
