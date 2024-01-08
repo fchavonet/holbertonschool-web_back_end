@@ -10,6 +10,6 @@ def list_all(mongo_collection):
     - mongo_collection: the MongoDB collection to retrieve documents from.
 
     Returns:
-    - A cursor object containing all documents in the collection.
+    A cursor object containing all documents in the collection.
     """
     return mongo_collection.find()
