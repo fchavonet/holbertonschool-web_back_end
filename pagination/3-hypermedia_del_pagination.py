@@ -58,11 +58,12 @@ class Server:
                                  and 0 <= index < len(dataset))
         assert type(page_size) is int and page_size > 0
 
-        current_page_data = list(dataset.values())[index:index + page_size]
-        if index + page_size < len(dataset):
-            next_index = index + page_size
-        else:
-            next_index = None
+        current_page_data = []
+        next_index = index
+        while len(current_page_data) < page_size and next_index in dataset:
+            item = dataset[next_index]
+            current_page_data.append(item)
+            next_index += 1
 
         hyper_info = {
             "index": index,
