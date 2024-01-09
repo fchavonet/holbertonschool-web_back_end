@@ -53,13 +53,13 @@ class Server:
                     page_size, data, and total_pages.
         """
         dataset = self.indexed_dataset()
+        current_page_data = []
+        next_index = index
 
         assert index is None or (type(index) is int
                                  and 0 <= index < len(dataset))
         assert type(page_size) is int and page_size > 0
 
-        current_page_data = []
-        next_index = index
         while len(current_page_data) < page_size and next_index in dataset:
             item = dataset[next_index]
             current_page_data.append(item)
