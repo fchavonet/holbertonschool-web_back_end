@@ -14,7 +14,10 @@ export default function handleProfileSignup(firstName, lastName, filename) {
         } else {
           resultArray.push({
             status: result.status,
-            value: result.reason,
+            reason: {
+              name: result.reason.name,
+              message: result.reason.message,
+            },
           });
         }
       });
