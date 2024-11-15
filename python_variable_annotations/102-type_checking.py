@@ -1,5 +1,7 @@
-from typing import Tuple, List
+#!/usr/bin/env python3
+""" Module with a type-annotated function for zooming in on an array. """
 
+from typing import Tuple, List
 
 def zoom_array(lst: Tuple, factor: int = 2) -> List:
     """
