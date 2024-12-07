@@ -711,13 +711,15 @@ guillaume@ubuntu:~/$
 git clone https://github.com/fchavonet/holbertonschool-web_back_end.git
 ```
 
-2. Navigate to the `caching` directory:
+2. Open the repository you've just cloned.
+
+3. Navigate to the `caching` directory:
 
 ```
 cd caching
 ```
 
-3. Ensure all files are executable:
+4. Ensure all files are executable:
 
 ```
 chmod 777 *.py
