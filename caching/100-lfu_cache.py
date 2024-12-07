@@ -26,45 +26,45 @@ class LFUCache(BaseCaching):
         Add an item to the cache using LFU policy.
         If key or item is None, do nothing.
         """
-        if key is not None and item is not None:
-            if key in self.cache_data:
-                self.cache_data[key] = item
-                self.frequency[key] += 1
-            else:
-                self.cache_data[key] = item
-                self.frequency[key] = 1
-                self.usage_order.append(key)
+        if key is None or item is None:
+            return
 
-            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+        if key in self.cache_data:
+            self.cache_data[key] = item
+            self.frequency[key] += 1
+        else:
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
                 self.__evict_lfu()
+            self.cache_data[key] = item
+            self.frequency[key] = 1
+            self.usage_order.append(key)
+
+        self.__update_usage_order(key)
 
     def get(self, key):
         """
         Get an item by key.
         If key is None or the key is not in the cache, return None.
         """
-        if key is not None and key in self.cache_data:
-            self.frequency[key] += 1
-            self.__update_usage_order(key)
-            return self.cache_data[key]
-        return None
+        if key is None or key not in self.cache_data:
+            return None
+
+        self.frequency[key] += 1
+        self.__update_usage_order(key)
+        return self.cache_data[key]
 
     def __evict_lfu(self):
         """
         Evict the least frequently used item.
-        Break ties using the LRU algorithm.
+        Resolve ties using LRU (usage order).
         """
         min_freq = min(self.frequency.values())
-        min_freq_keys = [
-            key for key in self.frequency if self.frequency[key] == min_freq]
+        min_freq_keys = [key for key in self.frequency if self.frequency[key] == min_freq]
 
-        if len(min_freq_keys) > 1:
-            for key in self.usage_order:
-                if key in min_freq_keys:
-                    lfu_key = key
-                    break
-        else:
-            lfu_key = min_freq_keys[0]
+        for key in self.usage_order:
+            if key in min_freq_keys:
+                lfu_key = key
+                break
 
         del self.cache_data[lfu_key]
         del self.frequency[lfu_key]
