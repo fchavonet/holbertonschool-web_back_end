@@ -31,10 +31,10 @@ class MRUCache(BaseCaching):
             self.mru_key = key
 
             if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-                if self.mru_key in self.cache_data:
-                    del self.cache_data[self.mru_key]
-                    print(f"DISCARD: {self.mru_key}")
-                    self.mru_key = None
+                print(f"DISCARD: {self.mru_key}")
+                del self.cache_data[self.mru_key]
+
+                self.mru_key = None
 
     def get(self, key):
         """
