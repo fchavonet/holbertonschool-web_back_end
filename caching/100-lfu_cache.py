@@ -59,7 +59,8 @@ class LFUCache(BaseCaching):
         Resolve ties using LRU (usage order).
         """
         min_freq = min(self.frequency.values())
-        min_freq_keys = [key for key in self.frequency if self.frequency[key] == min_freq]
+        min_freq_keys = [
+            key for key in self.frequency if self.frequency[key] == min_freq]
 
         for key in self.usage_order:
             if key in min_freq_keys:
