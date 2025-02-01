@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 """
-This module provides utilities for handling and protecting sensitive data in logs and databases.
+This module provides utilities for handling
+and protecting sensitive data in logs and databases.
 """
 
 import logging
@@ -51,7 +52,10 @@ class RedactingFormatter(logging.Formatter):
         return super().format(record)
 
 
-def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
+def filter_datum(fields: List[str],
+                 redaction: str,
+                 message: str,
+                 separator: str) -> str:
     """
     Obfuscate specified fields in a log message.
 
@@ -119,7 +123,8 @@ def get_db() -> MySQLConnection:
 
 def main() -> None:
     """
-    Connects to MySQL, retrieves all rows from "users", and logs each row with PII fields filtered.
+    Connects to MySQL, retrieves all rows from "users",
+    and logs each row with PII fields filtered.
     """
     # Connect to the database.
     db: MySQLConnection = get_db()
