@@ -141,7 +141,7 @@ def main() -> None:
         log_message = "; ".join(
             [f"{key}={value}" for key, value in row_dict.items()])
         # Filter sensitive fields in the message.
-        filtered_message = filter_datum(PII_FIELDS, '***', log_message, '; ')
+        filtered_message = filter_datum(PII_FIELDS, "***", log_message, "; ")
         # Log the obfuscated message.
         logger.info(filtered_message)
 
