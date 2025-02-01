@@ -64,7 +64,6 @@ def filter_datum(fields: List[str], redaction: str, message: str, separator: str
     Returns:
         str: obfuscated log message.
     """
-
     # Replace values of specified fields.
     for field in fields:
         # Match "field=value" until the separator.
@@ -116,3 +115,40 @@ def get_db() -> MySQLConnection:
         host=host,
         database=database
     )
+
+
+def main() -> None:
+    """
+    Connects to MySQL, retrieves all rows from "users", and logs each row with PII fields filtered.
+    """
+    # Connect to the database.
+    db: MySQLConnection = get_db()
+    cursor = db.cursor()
+
+    # Execute query to select all rows from the "users" table.
+    cursor.execute("SELECT * FROM users;")
+    # Get the column names for the table.
+    fields: List[str] = [desc[0] for desc in cursor.description]
+
+    # Create and configure the logger.
+    logger = get_logger()
+
+    # Process and log each row.
+    for row in cursor:
+        # Map the column names to their corresponding values.
+        row_dict = dict(zip(fields, row))
+        # Create the log message by joining key-value pairs.
+        log_message = "; ".join(
+            [f"{key}={value}" for key, value in row_dict.items()])
+        # Filter sensitive fields in the message.
+        filtered_message = filter_datum(PII_FIELDS, '***', log_message, '; ')
+        # Log the obfuscated message.
+        logger.info(filtered_message)
+
+    # Close the cursor and the database connection.
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
