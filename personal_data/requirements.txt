@@ -1,0 +1,2 @@
+bcrypt==4.2.1
+mysql-connector-python==9.2.0
