@@ -42,7 +42,8 @@ class RedactingFormatter(logging.Formatter):
             str: formatted log message with sensitive fields redacted.
         """
         # Filter sensitive fields in the message.
-        record.msg = filter_datum(self.fields, self.REDACTION, record.msg, self.SEPARATOR)
+        record.msg = filter_datum(
+            self.fields, self.REDACTION, record.msg, self.SEPARATOR)
         return super().format(record)
 
 
@@ -67,3 +68,25 @@ def filter_datum(fields: List[str], redaction: str, message: str, separator: str
         # Replace field value with redaction.
         message = re.sub(pattern, f"{field}={redaction}", message)
     return message
+
+
+def get_logger() -> logging.Logger:
+    """
+    Create and configure a logger for user data.
+
+    Returns:
+        logging.Logger: configured logger with a RedactingFormatter.
+    """
+    # Create a logger named "user_data".
+    logger = logging.getLogger("user_data")
+    # Set logging level to INFO.
+    logger.setLevel(logging.INFO)
+    # Prevent propagation of log messages to parent loggers.
+    logger.propagate = False
+    # Create a StreamHandler and set its formatter.
+    handler = logging.StreamHandler()
+    handler.setFormatter(RedactingFormatter(PII_FIELDS))
+    # Add the handler to the logger.
+    logger.addHandler(handler)
+
+    return logger
