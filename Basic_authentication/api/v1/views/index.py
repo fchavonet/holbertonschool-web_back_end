@@ -38,3 +38,11 @@ def unauthorized_route():
     Route to trigger a 401 Unauthorized error.
     """
     abort(401)
+
+
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+def forbidden_route():
+    """
+    Route to trigger a 403 Forbidden error.
+    """
+    abort(403)
