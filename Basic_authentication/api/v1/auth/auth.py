@@ -25,7 +25,7 @@ class Auth:
             return True
 
         # Normalize the path to always have a trailing slash.
-        normalized_path = path if path.endswith('/') else path + '/'
+        normalized_path = path if path.endswith("/") else path + "/"
 
         # Check if the normalized path is in the excluded paths.
         for excluded in excluded_paths:
@@ -37,11 +37,17 @@ class Auth:
     def authorization_header(self, request=None) -> str:
         """
         Returns the value of the Authorization header, if present.
-        For now, it returns None.
         """
-        return None
+        if request is None:
+            return None
 
-    def current_user(self, request=None) -> TypeVar('User'):
+        auth_header = request.headers.get("Authorization")
+        if auth_header is None:
+            return None
+
+        return auth_header
+
+    def current_user(self, request=None) -> TypeVar("User"):
         """
         Returns the current user.
         For now, it returns None.
