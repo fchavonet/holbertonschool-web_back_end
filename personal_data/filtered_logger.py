@@ -10,7 +10,7 @@ import mysql.connector
 import os
 import re
 
-from mysql.connector.connection import MySQLConnection
+from mysql.connector import connection
 from typing import List
 
 
@@ -99,7 +99,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> MySQLConnection:
+def get_db() -> connection.MySQLConnection:
     """
     Connect to the database using environment variables.
 
