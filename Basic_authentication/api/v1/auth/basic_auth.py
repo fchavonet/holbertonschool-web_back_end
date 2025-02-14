@@ -142,7 +142,7 @@ class BasicAuth(Auth):
             or None if no user can be retrieved.
         """
 
-        auth_header = self.authorization_header(request)
+        auth_header = Auth().authorization_header(request)
         b64_header = self.extract_base64_authorization_header(auth_header)
         decoded = self.decode_base64_authorization_header(b64_header)
         email, password = self.extract_user_credentials(decoded)
