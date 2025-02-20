@@ -71,6 +71,9 @@ def before_request():
     if auth.authorization_header(request) is None:
         abort(401)
 
+    # Set the authenticated user.
+    request.current_user = auth.current_user(request)
+
     # Abort with a 403 error if no valid user is found.
     if auth.current_user(request) is None:
         abort(403)
