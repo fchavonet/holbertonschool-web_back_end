@@ -141,7 +141,7 @@ def get_user(user_id):
     if user_id == "me":
         if request.current_user is None:
             abort(404)
-        
+
         return jsonify(request.current_user.to_json())
 
     user = User.get(user_id)
