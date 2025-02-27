@@ -64,15 +64,24 @@ def before_request():
     # Define the list of paths that do not require authentication.
     excluded_paths = ["/api/v1/status/",
                       "/api/v1/unauthorized/",
-                      "/api/v1/forbidden/"]
+                      "/api/v1/forbidden/",
+                      "/api/v1/auth_session/login/"]
 
     # Skip authentication if the requested path is excluded.
     if not auth.require_auth(request.path, excluded_paths):
         return
 
+    # Retrieve session ID from the request cookies.
+    session_id = auth.session_cookie(request)
+
     # Abort with a 401 error if the Authorization header is missing.
-    if auth.authorization_header(request) is None:
+    if auth.authorization_header(request) is None and session_id is None:
         abort(401)
+
+    # Retrieve the user ID from the session if a session ID is provided.
+    user_id = None
+    if session_id is not None:
+        user_id = auth.user_id_for_session_id(session_id)
 
     # Set the authenticated user.
     request.current_user = auth.current_user(request)
