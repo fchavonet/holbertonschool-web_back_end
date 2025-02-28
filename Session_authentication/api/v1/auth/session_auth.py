@@ -89,7 +89,7 @@ class SessionAuth(Auth):
             return False
 
         session_id = self.session_cookie(request)
-        
+
         if session_id is None:
             return False
 

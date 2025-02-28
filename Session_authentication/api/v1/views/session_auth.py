@@ -21,7 +21,7 @@ def session_auth_login():
 
     if not email:
         return jsonify({"error": "email missing"}), 400
-        
+
     if not password:
         return jsonify({"error": "password missing"}), 400
 
@@ -45,7 +45,11 @@ def session_auth_login():
     return response
 
 
-@app_views.route("/auth_session/logout", methods=["DELETE"], strict_slashes=False)
+@app_views.route(
+    "/auth_session/logout",
+    methods=["DELETE"],
+    strict_slashes=False
+)
 def session_auth_logout():
     """
     Handles session logout.
