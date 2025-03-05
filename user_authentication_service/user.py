@@ -21,6 +21,7 @@ class User(Base):
         session_id (str, optional): session identifier.
         reset_token (str, optional): token for password reset.
     """
+
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
@@ -36,6 +37,7 @@ class User(Base):
         Returns:
             str: a formatted string with user details.
         """
+
         return (
             f"<User(email='{self.email}', "
             f"hashed_password='{self.hashed_password}', "
