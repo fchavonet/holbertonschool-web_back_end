@@ -101,5 +101,5 @@ def _generate_uuid() -> str:
     Returns:
         str: a string representation of a new UUID.
     """
-    
+
     return str(uuid.uuid4())
