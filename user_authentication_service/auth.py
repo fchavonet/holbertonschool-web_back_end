@@ -89,6 +89,7 @@ class Auth:
         Returns:
             str: the generated session ID, or None if the user does not exist.
         """
+
         try:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
