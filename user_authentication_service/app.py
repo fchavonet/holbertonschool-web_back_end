@@ -84,8 +84,9 @@ def logout() -> Response:
     DELETE route that logs out a user.
 
     Returns:
-        A redirect response to the home page,
-        or a 403 status code if the session is invalid.
+        Response: a JSON response containing:
+            - On success: redirect response to the home page.
+            - On failure: a 403 status code if the session is invalid.
     """
 
     session_id = request.cookies.get("session_id")
@@ -93,6 +94,7 @@ def logout() -> Response:
         abort(403)
 
     user = AUTH.get_user_from_session_id(session_id)
+    
     if user is None:
         abort(403)
 
@@ -102,3 +104,25 @@ def logout() -> Response:
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
+
+
+@app.route("/profile", methods=["GET"])
+def profile() -> Response:
+    """
+    GET route that retrieves a user's profile.
+
+    Returns:
+        Response: a JSON response containing:
+            - On success: the user's email on success.
+            - On failure: a 403 error on failure.
+    """
+    session_id = request.cookies.get("session_id")
+    if not session_id:
+        abort(403)
+
+    user = AUTH.get_user_from_session_id(session_id)
+
+    if user is None:
+        abort(403)
+
+    return jsonify({"email": user.email})
