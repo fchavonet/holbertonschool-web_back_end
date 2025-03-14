@@ -5,7 +5,8 @@ Module for the basic Flask app for the user authentication service.
 """
 
 from auth import Auth
-from flask import abort, Flask, jsonify, request, Response, make_response
+from flask import Flask
+from flask import abort, jsonify, make_response, redirect, request, Response
 
 app = Flask(__name__)
 AUTH = Auth()
@@ -75,6 +76,28 @@ def login() -> Response:
     response.set_cookie("session_id", session_id, path="/")
 
     return response
+
+
+@app.route("/sessions", methods=["DELETE"])
+def logout() -> Response:
+    """
+    DELETE route that logs out a user.
+
+    Returns:
+        A redirect response to the home page,
+        or a 403 status code if the session is invalid.
+    """
+
+    session_id = request.cookies.get("session_id")
+    if not session_id:
+        abort(403)
+
+    user = AUTH.get_user_from_session_id(session_id)
+    if user is None:
+        abort(403)
+
+    AUTH.destroy_session(user.id)
+    return redirect("/")
 
 
 if __name__ == "__main__":
