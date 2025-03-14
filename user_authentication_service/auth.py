@@ -110,7 +110,7 @@ class Auth:
         Returns:
             User: the corresponding user if found, otherwise None.
         """
-        
+
         if not session_id:
             return None
 
