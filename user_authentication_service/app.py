@@ -132,8 +132,8 @@ def get_reset_password_token_route() -> Response:
 
     Returns:
         Response: a JSON response containing:
-                - On success:  user's email and reset token.
-                - On failure: a 403 error if the email is not registered.
+            - On success:  user's email and reset token.
+            - On failure: a 403 error if the email is not registered.
     """
 
     email = request.form.get("email")
@@ -146,6 +146,34 @@ def get_reset_password_token_route() -> Response:
         abort(403)
 
     return jsonify({"email": email, "reset_token": reset_token})
+
+
+@app.route("/reset_password", methods=["PUT"])
+def update_password_route() -> Response:
+    """
+    PUT route that updates a user's password.
+
+    Expects:
+        Form data with fields "email", "reset_token", and "new_password".
+
+    Returns:
+        Response: a JSON response containing:
+            - On success: a JSON response with the updated email and a messag.
+            - On failure: a 403 error.
+    """
+    email = request.form.get("email")
+    reset_token = request.form.get("reset_token")
+    new_password = request.form.get("new_password")
+
+    if not email or not reset_token or not new_password:
+        abort(403)
+
+    try:
+        AUTH.update_password(reset_token, new_password)
+    except ValueError:
+        abort(403)
+
+    return jsonify({"email": email, "message": "Password updated"})
 
 
 if __name__ == "__main__":
