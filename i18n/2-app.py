@@ -36,7 +36,7 @@ def get_locale() -> str:
     Returns:
         A language code ("en" or "fr").
     """
-    
+
     return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
