@@ -19,17 +19,22 @@ class Config:
     """
 
     LANGUAGES = ["en", "fr"]
-    BABEL_DEFAULT_LOCALE = "en"
+    # BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
 def get_locale():
     """
-    Selects the best matching language from the request headers.
+    # Selects the best matching language from the request headers.
 
     Returns:
         A language code ("en" or "fr").
     """
+
+    user_locale = request.args.get("locale")
+
+    if user_locale and user_locale in app.config["LANGUAGES"]:
+        return user_locale
 
     return request.accept_languages.best_match(app.config["LANGUAGES"])
 
@@ -50,7 +55,7 @@ def index():
          Rendered HTML template.
     """
 
-    return render_template("2-index.html")
+    return render_template("3-index.html")
 
 
 if __name__ == "__main__":
