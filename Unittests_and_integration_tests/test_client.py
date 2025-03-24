@@ -60,6 +60,7 @@ class TestGithubOrgClient(unittest.TestCase):
         Test that "GithubOrgClient.public_repos" returns the list
         of repository names from the chosen payload.
         """
+
         get_json_mock.return_value = [
             {"name": "random_rep"},
             {"name": "random-rep1"},
@@ -79,6 +80,25 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(r, mocked_public_repos.return_value)
             mocked_public_repos.assert_called_once()
             get_json_mock.assert_called_once()
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False)
+    ])
+    def test_has_license(
+        self,
+        repo: dict,
+        license_key: str,
+        expected: bool
+    ) -> None:
+        """
+        Test that "GithubOrgClient.has_license" returns the expected value
+        based on the repository license information.
+        """
+
+        client_instance = GithubOrgClient("abc")
+        result = client_instance.has_license(repo, license_key)
+        self.assertEqual(result, expected)
 
 
 if __name__ == "__main__":
