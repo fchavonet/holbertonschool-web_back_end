@@ -5,7 +5,7 @@ Basic Flask application with a single route.
 """
 
 from flask import Flask, render_template, request
-from flask_babel import Babel, _
+from flask_babel import Babel
 
 
 class Config:
