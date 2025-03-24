@@ -9,9 +9,6 @@ from fixtures import TEST_PAYLOAD
 from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, PropertyMock
 
-# Unpack the payload from "TEST_PAYLOAD".
-org_payload, repos_payload, expected_repos, apache2_repos = TEST_PAYLOAD[0]
-
 
 class TestGithubOrgClient(unittest.TestCase):
     """
@@ -101,9 +98,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
 @parameterized_class(
     ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
-    [
-        (org_payload, repos_payload, expected_repos, apache2_repos),
-    ]
+    TEST_PAYLOAD
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """
