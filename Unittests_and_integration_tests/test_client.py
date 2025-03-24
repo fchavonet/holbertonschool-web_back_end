@@ -36,7 +36,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     def test_public_repos_url(self) -> None:
         """
-        Test that GithubOrgClient._public_repos_url returns the correct URL
+        Test that "GithubOrgClient._public_repos_url" returns the correct URL
         based on the mocked org property.
         """
 
@@ -53,6 +53,32 @@ class TestGithubOrgClient(unittest.TestCase):
                 client_instance._public_repos_url,
                 fake_payload["repos_url"]
             )
+
+    @patch("client.get_json")
+    def test_public_repos(self, get_json_mock):
+        """
+        Test that "GithubOrgClient.public_repos" returns the list
+        of repository names from the chosen payload.
+        """
+        get_json_mock.return_value = [
+            {"name": "random_rep"},
+            {"name": "random-rep1"},
+        ]
+        # Call the mock function to simulate its invocation.
+        get_json_mock()
+        with patch(
+            "client.GithubOrgClient._public_repos_url",
+            new_callable=PropertyMock
+        ) as mocked_public_repos:
+            mocked_public_repos.return_value = [
+                {"name": "rand"},
+                {"name": "rand1"},
+            ]
+            gc = GithubOrgClient("abc")
+            r = gc._public_repos_url
+            self.assertEqual(r, mocked_public_repos.return_value)
+            mocked_public_repos.assert_called_once()
+            get_json_mock.assert_called_once()
 
 
 if __name__ == "__main__":
