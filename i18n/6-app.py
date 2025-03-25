@@ -54,7 +54,7 @@ def get_locale():
     # 2. User preference
     if g.get("user"):
         user_locale = g.user.get("locale")
-        
+
         if user_locale in app.config["LANGUAGES"]:
             return user_locale
 
