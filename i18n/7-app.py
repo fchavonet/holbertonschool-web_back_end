@@ -4,8 +4,10 @@
 Basic Flask application with a single route.
 """
 
+import pytz
 from flask import Flask, render_template, request, g
 from flask_babel import Babel
+from pytz.exceptions import UnknownTimeZoneError
 
 
 class Config:
@@ -77,6 +79,36 @@ def get_user():
         return None
 
 
+def get_timezone():
+    """
+    Determines the best timezone to use for the request.
+
+    Priority:
+    1. Timezone from URL parameters (if valid).
+    2. Timezone from user settings (if valid).
+    3. Default: UTC.
+    """
+
+    tz_param = request.args.get("timezone")
+
+    if tz_param:
+        try:
+            return str(pytz.timezone(tz_param))
+        except UnknownTimeZoneError:
+            pass
+
+    if g.get("user"):
+        user_tz = g.user.get("timezone")
+
+        if user_tz:
+            try:
+                return str(pytz.timezone(user_tz))
+            except UnknownTimeZoneError:
+                pass
+
+    return "UTC"
+
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
@@ -102,7 +134,7 @@ def index():
          Rendered HTML template.
     """
 
-    return render_template("6-index.html")
+    return render_template("7-index.html")
 
 
 if __name__ == "__main__":
