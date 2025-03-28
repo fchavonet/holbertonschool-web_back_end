@@ -6,6 +6,8 @@ Defines a Cache class that interacts with Redis.
 
 import redis
 import uuid
+from typing import Union
+
 
 class Cache():
     """
@@ -21,7 +23,7 @@ class Cache():
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data):
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         Store the given data in Redis using a randomly generated key.
 
