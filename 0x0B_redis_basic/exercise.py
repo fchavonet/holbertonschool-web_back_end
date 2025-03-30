@@ -31,9 +31,13 @@ def call_history(method: Callable) -> Callable:
     """
     Decorator to store the history of inputs and outputs.
     """
+
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
-        """Store input args and output result in Redis lists."""
+        """
+        Store input args and output result in Redis lists.
+        """
+
         input_key = method.__qualname__ + ":inputs"
         output_key = method.__qualname__ + ":outputs"
 
@@ -126,3 +130,25 @@ class Cache():
         """
 
         return self.get(key, fn=int)
+
+
+def replay(method: Callable):
+    """
+    Display the history of calls of a particular function.
+
+    Args:
+        method (Callable): the method whose history to display.
+    """
+
+    r = redis.Redis()
+    method_name = method.__qualname__
+    inputs_key = method_name + ":inputs"
+    outputs_key = method_name + ":outputs"
+
+    inputs = r.lrange(inputs_key, 0, -1)
+    outputs = r.lrange(outputs_key, 0, -1)
+
+    print(f"{method_name} was called {len(inputs)} times:")
+
+    for inp, out in zip(inputs, outputs):
+        print(f"{method_name}(*{inp.decode("utf-8")}) -> {out.decode("utf-8")}")
