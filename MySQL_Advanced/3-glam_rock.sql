@@ -1,10 +1,10 @@
 -- Select glam rock bands and compute their lifespan.
 SELECT
     name AS band_name,
-    COALESCE(split, YEAR (CURDATE ())) - formed AS lifespan
+    COALESCE(split, 2020) - formed AS lifespan
 FROM
     metal_bands
 WHERE
-    style LIKE '%Glam rock%'
+    style = 'Glam rock'
 ORDER BY
     lifespan DESC;
