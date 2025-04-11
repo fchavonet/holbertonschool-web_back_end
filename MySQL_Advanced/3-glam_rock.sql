@@ -1,6 +1,6 @@
 -- Select glam rock bands and compute their lifespan.
 SELECT
-    band_name,
+    name AS band_name,
     COALESCE(split, YEAR (CURDATE ())) - formed AS lifespan
 FROM
     metal_bands
