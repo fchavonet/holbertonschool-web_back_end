@@ -6,7 +6,7 @@ function sendNotification(phoneNumber, message) {
 	console.log("Sending notification to " + phoneNumber + ", with message: " + message);
 }
 
-queue.process("push_notification_code", function (job, done) {
+queue.process("push_notification_code", (job, done) => {
 	const phoneNumber = job.data.phoneNumber;
 	const message = job.data.message;
 
