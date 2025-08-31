@@ -30,6 +30,7 @@
 ## <span id="description">Description</span>
 
 This project demonstrates how to consume a REST API to fetch employee TODO data and export it into multiple formats using Python.
+<br>
 It is intentionally kept simple and educational: clear scripts, clean I/O, and compliance with Holberton’s style guidelines.
 
 ## <span id="objectives">Objectives</span>
